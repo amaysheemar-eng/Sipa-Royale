@@ -1,1 +1,116 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sipa Royale 🥢</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #fef3c7;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #game {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      background: #bbf7d0;
+      border: 2px solid #444;
+      overflow: hidden;
+    }
+
+    #player {
+      position: absolute;
+      bottom: 20px;
+      left: 180px;
+      width: 40px;
+      height: 40px;
+      background: #f87171;
+      border-radius: 50%;
+    }
+
+    #ball {
+      position: absolute;
+      top: 100px;
+      left: 190px;
+      width: 20px;
+      height: 20px;
+      background: #facc15;
+      border-radius: 50%;
+    }
+
+    p {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sipa Royale 🥢</h1>
+  <div id="game">
+    <div id="player"></div>
+    <div id="ball"></div>
+  </div>
+  <p>Score: <span id="score">0</span></p>
+
+  <script>
+    const player = document.getElementById('player');
+    const ball = document.getElementById('ball');
+    const scoreDisplay = document.getElementById('score');
+
+    let playerX = 180;
+    let ballY = 100;
+    let ballX = 190;
+    let ballSpeed = 2;
+    let score = 0;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        playerX = Math.max(0, playerX - 10);
+      }
+      if (e.key === 'ArrowRight') {
+        playerX = Math.min(360, playerX + 10);
+      }
+      if (e.key === ' ') {
+        kickBall();
+      }
+      player.style.left = `${playerX}px`;
+    });
+
+    function kickBall() {
+      if (Math.abs(ballX - playerX) < 30 && ballY > 340) {
+        ballSpeed = -10;
+        score++;
+        scoreDisplay.textContent = score;
+      }
+    }
+
+    function updateBall() {
+      ballY += ballSpeed;
+      ballSpeed += 0.5; // gravity
+      ball.style.top = `${ballY}px`;
+      ball.style.left = `${ballX}px`;
+
+      if (ballY > 400) {
+        alert('Game Over! Final Score: ' + score);
+        ballY = 100;
+        ballSpeed = 2;
+        score = 0;
+        scoreDisplay.textContent = score;
+      }
+
+      requestAnimationFrame(updateBall);
+    }
+
+    updateBall();
+  </script>
+</body>
+</html>
